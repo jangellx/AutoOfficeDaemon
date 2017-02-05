@@ -20,10 +20,62 @@ It's important to note that this only wakes/sleeps the display, not the entire c
 
 In order to listen for sleep/wake events, we need to set up an ApplicationDelegate and spawn an NSApplication.  This conflicts with the Vapor droplet, since that wants to run as a blocking function.  The solution was simply to run Vapor in a background thread.  Nice and easy.
 
+## Installation
+Installation is done per the instructions on the Vapor page to create a new project.  The AutoOfficeDaemon repository only includes the files unique to this project -- the sources and configs -- so you need to get the rest of the Vapor toolbox to get everything up and running.  It's pretty straight-forward, though; after creating an app, you simply replace the relevant files with those from this repository, build and go.
+
 ## Configuration
 The SmartApp URL, application ID and OAuth2 access token are stored in Configs/app.config .  I borrowed how [homebridge-smartthings[(https://www.npmjs.com/package/homebridge-smartthings) does this, and have the SmartApp generate the config file.  You just copy the contents from the SmartApp on your phone, get it to your computer somehow (ie: paste it into the iOS Notes app), and paste it Configs/app.json .
 
 Besides the SmartApp URL, application ID and OAuth2 access token, this includes a sleep delay.  The idea here is that I have multiple computers on my desk, and if one goes idle and sleeps while I'm using another one I usually immediately wake it back up.  However, I don't want all the lights and monitors to go off just because one machine unexpectedly went to sleep.  To resolve this, a sleep delay can be used to wait a certain number of seconds after display sleep signaling the SmartApp.
+
+## Auto-Launching the Daemon
+Vapor makes it easy to run the server -- just cd to the proejct dir and type "vapor run server".  The easiest way to automatically launch it is to use launchd, by creating a file in ~/Library/LaunchAgents/com.AutoOfficeDaemon.app.plist with these contents:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>Label</key>
+		<string>com.AutoOfficeDaemon.app</string>
+
+		<key>WorkingDirectory</key>
+		<string>/Users/yourUsername/pathToDaemon/AutoOfficeDaemon</string>
+
+		<key>Program</key>
+		<string>/usr/local/bin/vapor</string>
+
+		<key>ProgramArguments</key>
+		<array>
+			<string>/usr/local/bin/vapor</string>
+			<string>run</string>
+			<string>serve</string>
+		</array>
+
+		<key>RunAtLoad</key>
+		<true/>
+
+		<key>KeepAlive</key>
+		<true/>
+</dict>
+</plist>
+```
+
+Replacing "yourUsername/pathToDaemon" with the actual location of your installation.  This will launch it on log-in and keep it alive, relaunching it if it crashes or otherwise quits.  To begin running the daemon manually, use:
+
+    launchctl load ~/Library/LaunchAgents/com.AutoOfficeDaemon.app.plist
+
+To unload it, run:
+
+    launchctl unload ~/Library/LaunchAgents/com.AutoOfficeDaemon.app.plist
+
+If launchctl says there's a problem with your plist, you can validate it with "plutil -lint ~/Library/LaunchAgents/com.AutoOfficeDaemon.app.plist".
+
+For more information about launchd, see [launchd.info](http://www.launchd.info).  There are lots of good debugging tips there, too.
+
+Note that you have to build the app from the command line (ie: "vapor build"), not from an Xcode project for this to work, or else "vapor run" won't be able to find the built app.
+
+The app name is simply "App", so that's what you'll see in Activity Monitor and pgrep.  I'm honestly not entirely sure how to change the name of a Vapor-based app; the world of web apps where the entire source is deployed with the server and expects to be the only server running is a bit alien to conventional application developemnt, but it's not a big deal to me, so I haven't spent too much time on it.
 
 ## About the Code
 This is really my first Swift app (I'm primarily a C programmer), so it's a bit clunky and not terribly object-oriented.  I don't use the controller, and the wake/sleep handler and Vapor server communicate through global variables rather than passing objects back and for.  This project is so simple that none of these are deal-brakers.
