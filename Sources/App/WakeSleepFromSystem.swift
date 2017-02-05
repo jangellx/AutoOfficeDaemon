@@ -36,7 +36,7 @@ class WakeSleepHandler : NSObject, NSApplicationDelegate {
 			timer?.invalidate()			// Stop the timer
 			timer = nil;				// Clear it to empty
 
-			putToSmartApp( isAwake )			// Tell SmartThinsg to wake up
+			putToSmartApp( isAwake )		// Tell SmartThings to wake up
 
 		} else {
 			print("Unknown sleep/wake event")
