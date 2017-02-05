@@ -1,0 +1,9 @@
+{
+    "description":  "Auto Office Settings",
+
+    "app_url":      "https://graph.api.smartthings.com:443/api/smartapps/installations/",
+    "app_id":       "31c9c53b-359f-4cce-92f8-7532f8d3ce1a",
+    "access_token": "da27a5af-88aa-44d3-b268-51a870492e03",
+
+    "sleep_delay":   60
+}
