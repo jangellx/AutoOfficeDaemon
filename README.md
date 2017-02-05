@@ -24,7 +24,7 @@ The SmartApp URL, application ID and OAuth2 access token are stored in Configs/a
 Besides the SmartApp URL, application ID and OAuth2 access token, this includes a sleep delay.  The idea here is that I have multiple computers on my desk, and if one goes idle and sleeps while I'm using another one I usually immediately wake it back up.  However, I don't want all the lights and monitors to go off just because one machine unexpectedly went to sleep.  To resolve this, a sleep delay can be used to wait a certain number of seconds after display sleep signaling the SmartApp.
 
 ## About the Code
-This is really my first Swift app (I'm primarily a C programmer), so it's a bit clunky and not terribly object-oriented.  I don't use the controller, and the wake handler and vapor server communicate through global variables rather than passing objects back and for.  This project is so simple that none of these are deal-brakers.
+This is really my first Swift app (I'm primarily a C programmer), so it's a bit clunky and not terribly object-oriented.  I don't use the controller, and the wake/sleep handler and Vapor server communicate through global variables rather than passing objects back and for.  This project is so simple that none of these are deal-brakers.
 
 ## Vapor Documentation
 See the Vapor web framework's [documentation](http://docs.vapor.codes) for more details about Vapor.
