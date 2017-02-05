@@ -4,3 +4,5 @@ xcuserdata
 *.xcodeproj
 Config/secrets
 Config/app.json
+
+Config/production/app.json
