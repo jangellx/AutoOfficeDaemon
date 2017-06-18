@@ -74,7 +74,7 @@ When I tried to get this working on a new machine, "vapor run" gave me a runtime
 	<string>com.AutoOfficeDaemon.app</string>
 
 	<key>WorkingDirectory</key>
-	<string>/Users/jangell/JoesSource/Vapor/AutoOfficeDaemon</string>
+	<string>/Users/yourUserName/pathToDaemon/AutoOfficeDaemon</string>
 
 	<key>Program</key>
 	<string>/Users/yourUserName/Library/Developer/Xcode/DerivedData/AutoOfficeDaemon-gmepnxgdollkryaqjgmhfqujuqpy/Build/Products/Debug/App</string>
